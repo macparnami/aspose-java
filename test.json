@@ -1,0 +1,57 @@
+{
+  "table_formatting": {},
+  "table_header": [
+    {
+      "row_formatting":{},
+      "cells":[
+        {
+          "data": "H1",
+          "cell_formatting":{
+            "vertical_merge": 1
+          }
+
+        },
+        {
+          "data": "H2",
+          "cell_formatting": {
+            "horizontal_merge": 1
+          }
+        },
+        {
+          "data": "H3",
+          "cell_formatting":{
+            "horizontal_merge": 2
+          }
+        }
+      ]
+    },
+    {
+      "row_prop":{},
+      "cells":[
+        {
+          "data": "SH1",
+          "cell_formatting":{
+            "vertical_merge": 2
+          }
+        },
+        {
+          "data": "SH2",
+          "cell_formatting": {
+            "horizontal_merge": 0
+          }
+        },
+        {
+          "data": "SH3",
+          "cell_formatting":{
+            "horizontal_merge": 0
+          }
+        }
+      ]
+    }
+  ],
+  "table_data": {
+    "column_length": 3,
+    "row_length": 4,
+    "data": ["1","2","3","4","5","6"]
+  }
+}

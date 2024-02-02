@@ -1,8 +1,13 @@
 package com.jpmchase.cib.plugins;
 
 import com.aspose.words.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -11,78 +16,31 @@ import java.util.ArrayList;
  */
 public class App
 {
-    private static CustomTableData CreateSampleData(){
-        //3X3 table
-        CustomTableData TableStructure = new CustomTableData();
-        ArrayList<TableRow> rows = new ArrayList<TableRow>(3);
-
-        TableRow R1 = new TableRow();
-        TableRow R2 = new TableRow();
-        TableRow R3 = new TableRow();
-
-        ArrayList<TableCell> row1  = new ArrayList<TableCell>(3);
-        ArrayList<TableCell> row2 = new ArrayList<TableCell>(3);
-        ArrayList<TableCell> row3 = new ArrayList<TableCell>(3);
-        //Heading
-        TableCell h1 = new TableCell();
-        h1.data = "h1";
-        h1.formatting = new CellFormatting();
-        h1.formatting.HorizontalMerge = CellMerge.FIRST;
-        TableCell h2 = new TableCell();
-        h2.data = "";
-        h2.formatting = new CellFormatting();
-        h2.formatting.HorizontalMerge = CellMerge.PREVIOUS;
-        TableCell h3 = new TableCell();
-        h3.data = "h3";
-        h3.formatting = new CellFormatting();
-        h3.formatting.VerticalMerge = CellMerge.FIRST;
-        //Sub-Headings
-        TableCell sh1 = new TableCell();
-        sh1.data = "sh1";
-        TableCell sh2 = new TableCell();
-        sh2.data = "sh2";
-        TableCell sh3 = new TableCell();
-        sh3.data = "";
-        sh3.formatting = new CellFormatting();
-        sh3.formatting.VerticalMerge =  CellMerge.PREVIOUS;
-        //columns
-        TableCell c1 = new TableCell();
-        c1.data = "c1";
-        TableCell c2 = new TableCell();
-        c2.data = "c2";
-        TableCell c3 = new TableCell();
-        c3.data = "c3";
-
-        row1.add(h1);
-        row1.add(h2);
-        row1.add(h3);
-        row2.add(sh1);
-        row2.add(sh2);
-        row2.add(sh3);
-        row3.add(c1);
-        row3.add(c2);
-        row3.add(c3);
-
-        R1.cells = row1;
-        R2.cells = row2;
-        R3.cells = row3;
-
-        rows.add(R1);
-        rows.add(R2);
-        rows.add(R3);
-
-        TableStructure.rows = rows;
-
-        return TableStructure;
-    }
     public static void main( String[] args ) throws Exception
     {
         //Start here
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         TableWrapper Wrapper = new TableWrapper(builder);
-        CustomTableData DataForTable = CreateSampleData();
-        Wrapper.CreateTable(DataForTable);
+
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(new FileReader("test.json"));
+            JSONObject jsonObject = (JSONObject)obj;
+            JSONObject TableDataObject = (JSONObject)jsonObject.get("table_data");
+
+            Long temp1 = (Long)TableDataObject.get("column_length");
+            int column_length = new Integer(temp1.intValue());
+            Long temp2 = (Long)TableDataObject.get("row_length");
+            int row_length = new Integer(temp2.intValue());
+
+            CustomTableData DataForTable = new CustomTableData(column_length, row_length, jsonObject);
+            Wrapper.CreateTable(DataForTable);
+            doc.save("Tables.pdf");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
 
 //        //Static Table Build
 //        //Table Start here
@@ -90,16 +48,71 @@ public class App
 //
 //        // Set The Headers Row 1
 //        builder.insertCell();
-//        builder.getCellFormat().setHorizontalMerge(CellMerge.FIRST);
-//        builder.write("Heading 1 Format Merged Column");
+//        builder.getCellFormat().setVerticalMerge(CellMerge.FIRST);
+//        builder.write("VHeading 1");
 //
 //        builder.insertCell();
-//        builder.getCellFormat().setHorizontalMerge(CellMerge.NONE);
-//        builder.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
-//        builder.write("");
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.FIRST);
+//        builder.write("H2");
 //        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
+//        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
+//
+//        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.FIRST);
+//        builder.write("H3");
+//        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
+//        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
+//        builder.endRow();
+//
+//        builder.insertCell();
+//        builder.getCellFormat().setVerticalMerge(CellMerge.PREVIOUS);
+//        builder.write("");
+//
+//        builder.insertCell();
+//        builder.getCellFormat().setVerticalMerge(CellMerge.NONE);
 //        builder.getCellFormat().setHorizontalMerge(CellMerge.NONE);
-//        builder.getCellFormat().setVerticalMerge(CellMerge.FIRST);
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.FIRST);
+//        builder.write("SH2");
+//        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
+//        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
+//
+//        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.FIRST);
+//        builder.write("SH3");
+//        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
+//        builder.insertCell();
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.PREVIOUS);
+//        builder.endRow();
+//
+//
+//        builder.insertCell();
+//        builder.getCellFormat().setVerticalMerge(CellMerge.NONE);
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.NONE);
+//        builder.getCellFormat().setVerticalMerge(CellMerge.PREVIOUS);
+//        builder.write("");
+//
+//        builder.insertCell();
+//        builder.getCellFormat().setVerticalMerge(CellMerge.NONE);
+//        builder.getCellFormat().setHorizontalMerge(CellMerge.NONE);
+//        builder.write("SSH2");
+//        builder.insertCell();
+//        builder.insertCell();
+//        builder.insertCell();
+//        builder.write("SH3");
+//        builder.insertCell();
+//
+//        builder.insertCell();
+//        builder.endRow();
+//        builder.endTable();
+
+
 //        builder.write("Heading 1 Format Single Col");
 //        builder.endRow();
 //
@@ -147,7 +160,8 @@ public class App
 
         //Add directory path if needed Document Write , Multiple formats like .pdf .docx etc can be used
 //        doc.save(Directory + "filename");
-        doc.save("Tables.pdf");
+//        doc.save("Tables.pdf");
+
 
     }
 
