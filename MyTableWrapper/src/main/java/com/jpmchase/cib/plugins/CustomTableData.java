@@ -1,6 +1,10 @@
 package com.jpmchase.cib.plugins;
 
+import java.awt.*;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+
+import com.aspose.words.Row;
 import org.json.simple.*;
 import java.util.Iterator;
 import java.lang.Long.*;
@@ -13,7 +17,7 @@ class CellFormatting extends Formatting{
     public int VerticalMerge ;
 }
 class RowFormatting extends Formatting{
-
+    public Color Color;
 }
 class TableFormatting extends Formatting{
 
@@ -102,6 +106,20 @@ public class CustomTableData {
 
     }
     static void SetRowFormatting(JSONObject RowFormatting, TableRow row){
+       if (RowFormatting !=null){
+           if(RowFormatting.containsKey("color")){
+               String temp = (String)RowFormatting.get("color");
+               Color color;
+               try {
+                   Field field = Class.forName("java.awt.Color").getField(temp);
+                   color = (Color)field.get(null);
+               } catch (Exception e) {
+                   color = null; // Not defined
+               }
+               row.formatting = new RowFormatting();
+               row.formatting.Color = color;
+            }
+       }
 
     }
     static void SetTableFormatting(JSONObject TableFormatting){

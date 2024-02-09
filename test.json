@@ -2,7 +2,7 @@
   "table_formatting": {},
   "table_header": [
     {
-      "row_formatting":{},
+      "row_formatting":{"color": "red"},
       "cells":[
         {
           "data": "H1",
@@ -26,7 +26,7 @@
       ]
     },
     {
-      "row_prop":{},
+      "row_formatting:":{},
       "cells":[
         {
           "data": "SH1",
@@ -50,6 +50,7 @@
     }
   ],
   "table_data": {
+    "row_formatting":{},
     "column_length": 3,
     "row_length": 4,
     "data": ["1","2","3","4","5","6"]
