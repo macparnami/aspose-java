@@ -6,4 +6,5 @@ import lombok.Data;
 public class CellFormatting {
     public int verticalMerge;
     public int horizontalMerge;
+    public Padding padding;
 }

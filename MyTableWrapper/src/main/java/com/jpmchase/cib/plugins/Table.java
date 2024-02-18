@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class Table {
-    TableFormatting tableFormatting;
-    List<TableHeader> tableHeader;
-    TableData tableData;
+    TableFormatting tableFormatting = null;
+    List<TableHeader> tableHeader = null;
+    TableData tableData = null;
 }

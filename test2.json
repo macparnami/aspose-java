@@ -43,7 +43,17 @@
           }
         },
         {
-          "data": "SH3"
+          "data": "SH3",
+          "cellFormatting": {
+            "padding": {"left": 0, "right": 0, "top": 0,"bottom":0}
+          },
+          "nestedTable": {
+            "tableData": {
+              "columnLength": 3,
+              "rowLength": 4,
+              "data": [["1","2","3"],["4","5","6"]]
+            }
+          }
         }
       ]
     }

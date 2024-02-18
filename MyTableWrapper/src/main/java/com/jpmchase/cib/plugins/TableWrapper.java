@@ -15,10 +15,14 @@ public class TableWrapper {
         //Apply Table Formatting
         ApplyTableFormatting(table.tableFormatting);
         //Create Rows
-        for(int i=0; i<table.tableHeader.size(); i++) {
-            createRow(table.tableHeader.get(i));
+        if(table.tableHeader !=null) {
+            for (int i = 0; i < table.tableHeader.size(); i++) {
+                createRow(table.tableHeader.get(i));
+            }
         }
-        createDataRow(table.tableData);
+        if(table.tableData != null) {
+            createDataRow(table.tableData);
+        }
         //End Table
         builder.endTable();
         FlushRowFormatting();
@@ -48,10 +52,10 @@ public class TableWrapper {
         ApplyCellFormatting(cell.cellFormatting);
         //Insert Cell Data
         builder.write(cell.data);
-//        if(cell.nestedTable !=null){
-//            TableWrapper Wrapper = new TableWrapper(builder);
-//            Wrapper.createTable(cell.nestedTable);
-//        }
+        if(cell.nestedTable !=null){
+            TableWrapper Wrapper = new TableWrapper(builder);
+            Wrapper.createTable(cell.nestedTable);
+        }
     }
     private static void createDataRow(TableData tableData) throws Exception{
         for(int i=0; i<tableData.data.size();i++){
@@ -79,8 +83,6 @@ public class TableWrapper {
     }
     private static void FlushRowFormatting(){
         builder.getCellFormat().getShading().clearFormatting();
-
-
     }
     private static void ApplyCellFormatting(CellFormatting format){
         if (format !=null) {
@@ -90,10 +92,10 @@ public class TableWrapper {
             if (format.verticalMerge >  0) {
                 builder.getCellFormat().setVerticalMerge(format.verticalMerge);
             }
-//            if (format.padding !=null){
-//                builder.getCellFormat().setPaddings(format.Padding[0],format.Padding[1],
-//                        format.Padding[2],format.Padding[3]);
-//            }
+            if (format.padding !=null){
+                builder.getCellFormat().setPaddings(format.padding.getLeft(),format.padding.getTop(),
+                        format.padding.getRight(),format.padding.getBottom());
+            }
         }
     }
     private static void FlushCellFormatting(){
