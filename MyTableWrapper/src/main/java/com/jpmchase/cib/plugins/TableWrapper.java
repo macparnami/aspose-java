@@ -1,7 +1,6 @@
 package com.jpmchase.cib.plugins;
 import com.aspose.words.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class TableWrapper {
@@ -9,28 +8,29 @@ public class TableWrapper {
     public TableWrapper(DocumentBuilder builderObj){
         builder = builderObj;
     }
-    public void CreateTable(CustomTableData tableData){
+    public void createTable(Table table)throws Exception{
         //Table Start here
         builder.startTable();
         //Apply Table Formatting
-        ApplyTableFormatting(tableData.formatting);
+        ApplyTableFormatting(table.tableFormatting);
         //Create Rows
-        for(int i=0; i<tableData.rows.size(); i++) {
-            CreateRow(tableData.rows.get(i));
+        for(int i=0; i<table.tableHeader.size(); i++) {
+            createRow(table.tableHeader.get(i));
         }
+        createDataRow(table.tableData);
         //End Table
         builder.endTable();
         FlushRowFormatting();
         FlushTableFormatting();
     }
-    private static void CreateRow(TableRow row){
+    private static void createRow(TableHeader row) throws Exception{
         //Reset previous Row Formatting
         FlushRowFormatting();
         //Apply Row Formatting
-        ApplyRowFormatting(row.formatting);
+        ApplyRowFormatting(row.rowFormatting);
         //Create cells
         for(int i=0; i<row.cells.size(); i++) {
-            CreateCell(row.cells.get(i));
+            createCell(row.cells.get(i));
         }
         builder.endRow();
         //Remove formatting of Last Cell from loop
@@ -38,15 +38,29 @@ public class TableWrapper {
 
 
     }
-    private static void CreateCell(TableCell cell){
+    private static void createCell(Cell cell) throws Exception{
         //Insert Cell Structure
         builder.insertCell();
         //Reset previous Cell Formatting, This need to be done after new Cell insert
         FlushCellFormatting();
         //Apply Cell Formatting for this cell
-        ApplyCellFormatting(cell.formatting);
+        ApplyCellFormatting(cell.cellFormatting);
         //Insert Cell Data
         builder.write(cell.data);
+//        if(cell.nestedTable !=null){
+//            TableWrapper Wrapper = new TableWrapper(builder);
+//            Wrapper.createTable(cell.nestedTable);
+//        }
+    }
+    private static void createDataRow(TableData tableData) throws Exception{
+        for(int i=0; i<tableData.data.size();i++){
+            String[] temp = tableData.data.get(i);
+            for(int j=0; j< temp.length; j++){
+                builder.insertCell();
+                builder.write(temp[j]);
+            }
+            builder.endRow();
+        }
     }
     private static void ApplyTableFormatting(TableFormatting format){
 
@@ -55,11 +69,11 @@ public class TableWrapper {
 
     }
     private static void ApplyRowFormatting(RowFormatting format){
-        if (format !=null) {
-            if (format.Color !=null){
-                builder.getCellFormat().getShading().setBackgroundPatternColor(format.Color);
-            }
-        }
+//        if (format !=null) {
+//            if (format.Color !=null){
+//                builder.getCellFormat().getShading().setBackgroundPatternColor(format.Color);
+//            }
+//        }
 
     }
     private static void FlushRowFormatting(){
@@ -69,12 +83,16 @@ public class TableWrapper {
     }
     private static void ApplyCellFormatting(CellFormatting format){
         if (format !=null) {
-            if (format.HorizontalMerge > 0) {
-                builder.getCellFormat().setHorizontalMerge(format.HorizontalMerge);
+            if (format.horizontalMerge > 0) {
+                builder.getCellFormat().setHorizontalMerge(format.horizontalMerge);
             }
-            if (format.VerticalMerge >  0) {
-                builder.getCellFormat().setVerticalMerge(format.VerticalMerge);
+            if (format.verticalMerge >  0) {
+                builder.getCellFormat().setVerticalMerge(format.verticalMerge);
             }
+//            if (format.padding !=null){
+//                builder.getCellFormat().setPaddings(format.Padding[0],format.Padding[1],
+//                        format.Padding[2],format.Padding[3]);
+//            }
         }
     }
     private static void FlushCellFormatting(){
