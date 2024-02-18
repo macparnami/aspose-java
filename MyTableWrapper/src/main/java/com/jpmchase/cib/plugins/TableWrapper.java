@@ -1,6 +1,7 @@
 package com.jpmchase.cib.plugins;
 import com.aspose.words.*;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class TableWrapper {
@@ -69,11 +70,11 @@ public class TableWrapper {
 
     }
     private static void ApplyRowFormatting(RowFormatting format){
-//        if (format !=null) {
-//            if (format.Color !=null){
-//                builder.getCellFormat().getShading().setBackgroundPatternColor(format.Color);
-//            }
-//        }
+        if (format !=null) {
+                builder.getCellFormat().getShading().setBackgroundPatternColor
+                        (new Color(format.color.getR(), format.color.getB(), format.color.getG()));
+                builder.getRowFormat().setHeadingFormat(format.isHeadingFormat());
+        }
 
     }
     private static void FlushRowFormatting(){

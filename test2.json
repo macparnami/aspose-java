@@ -2,7 +2,10 @@
   "tableFormatting": {},
   "tableHeader": [
     {
-      "rowFormatting":{"r": 0, "g": 71, "b": 123, "headingFormat": true},
+      "rowFormatting":{
+        "color":{"r": 0, "g": 71, "b": 123},
+        "headingFormat": true
+      },
       "cells":[
         {
           "data": "H1",

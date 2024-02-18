@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class RowFormatting {
-    private int r;
-    private int g;
-    private int b;
+    public Color color;
     private boolean headingFormat;
 }
